@@ -8,6 +8,7 @@ import com.dudek.authservice.service.AuthService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,18 +26,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public LoginDto loginUser(@Valid @RequestBody LoginRequestDto requestDto) {
-        return authService.loginUser(requestDto);
-    }
-
-    @GetMapping
-    public String test() {
-        return "test";
+    public ResponseEntity<LoginDto> loginUser(@Valid @RequestBody LoginRequestDto requestDto) {
+        return ResponseEntity.ok(authService.loginUser(requestDto));
     }
 
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDto registerUser(@Valid @RequestBody UserRegisterRequestDto requestDto) {
-        return authService.register(requestDto);
+    public ResponseEntity<UserDto> registerUser(@Valid @RequestBody UserRegisterRequestDto requestDto) {
+        return new ResponseEntity<>(authService.register(requestDto), HttpStatus.CREATED);
     }
 }
